@@ -97,7 +97,7 @@ function verif(){
     }
 
     if(controlnom&&controlprenom&&controlmail&&controldate&&controlmescommandes&&controlquestion&&controlcgu){//maintenant on s'assure que tout est valide 
-    }else{//sinon on revoi bien un false
+    }else{//sinon on renvoi bien un false
         return false;
     }
     }
