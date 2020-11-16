@@ -4,6 +4,9 @@ function verif()
         var nom = document.formulaire_contact.nom.value;
         var prenom = document.formulaire_contact.prenom.value;
         var date = document.formulaire_contact.date.value;
+        var cp = document.formulaire_contact.cp.value;
+        var adresse = document.formulaire_contact.adresse.value;
+        var ville = document.formulaire_contact.ville.value;
         var mescommandes = document.formulaire_contact.mescommandes.value;
         var email = document.formulaire_contact.email.value;
         var cgu = document.querySelector('#cgu:checked');
@@ -13,11 +16,21 @@ function verif()
         var verif 	= /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/
         var ctrnom= /^[a-zA-Z]{2,}$/
         var ctrprenom = /^[a-zA-Z]{2,}$/
-        var ctrmescommandes = /^[a-zA-Z]{4,}$/ 
+        var ctrcp = /^[0-9]{4,5}$/ 
         var ctrdate = /^[0-9]{4,4}-[0-9]{2,2}-[0-9]{2,2}$/
         var ctrquestion = /^[a-zA-Z0-9_.-]{4,}$/
-
-
+        var ctradresse = /^[a-zA-Z0-9_.-]{2,}$/
+        //au minimum 1 caractére car il existe la ville Y nom le plus court code postal 80190
+        var ctrville= /^[a-zA-Z]{1,}$/
+        var testedate = date.split('-');
+        var dateactuelle=new Date()
+        var year = dateactuelle.getFullYear();
+        var diffdate = year - 110;
+        var dateenv = year - 15;
+        var validy = false//valeur par défaut
+        if(parseInt(testedate[0])<parseInt(dateenv)&&testedate[0]>diffdate){// on contrôle que la personne a entre 15 ans et 120 ans
+        validy = true
+        }
     if (verif.exec(email) == null)// si email ne contient pas des lettre point chiffre avant @ aprés arobase pareilhormis là le point est interdit etc
     {
 
@@ -35,7 +48,56 @@ function verif()
 
     } 
 
- 
+  
+    if (ctradresse.exec(adresse) == null)// on contrôle l'entré
+    {
+
+        document.getElementById("dadresse").innerHTML="<div class=\"alert alert-danger\" role=\"alert\">vous devez entrer une adresse correct</div>";//si c'est null on affiche box alerte
+        document.getElementById("adresse").className = "form-control is-invalid";//on change la couleur de l'input en rouge
+        var controladresse = false;//on retourne false au form pour évité l'envoie du formulaire
+
+    }
+    else
+    {
+
+        document.getElementById("adresse").className = "form-control is-valid";//on change la couleur de l'input en vert
+        document.getElementById("dadresse").innerHTML="";//si c'est null on affiche rien
+        var controladresse = true;//on retourne true pour cette variable
+
+    } 
+    if (ctrville.exec(ville) == null)// on contrôle l'entré
+    {
+
+        document.getElementById("dville").innerHTML="<div class=\"alert alert-danger\" role=\"alert\">vous devez entrer une ville correct</div>";//si c'est null on affiche box alerte
+        document.getElementById("ville").className = "form-control is-invalid";//on change la couleur de l'input en rouge
+        var controlville= false;//on retourne false au form pour évité l'envoie du formulaire
+
+    }
+    else
+    {
+
+        document.getElementById("ville").className = "form-control is-valid";//on change la couleur de l'input en vert
+        document.getElementById("dville").innerHTML="";//si c'est null on affiche rien
+        var controlville = true;//on retourne true pour cette variable
+
+    } 
+    if (ctrcp.exec(cp) == null)// si email ne contient pas des lettre point chiffre avant @ aprés arobase pareil hormis là le point est interdit etc
+    {
+
+        document.getElementById("dcp").innerHTML="<div class=\"alert alert-danger\" role=\"alert\">vous devez entrer un code postal correct entre 4 à 5 chiffre suivant le pays</div>";//si c'est null on affiche box alerte
+        document.getElementById("cp").className = "form-control is-invalid";//on change la couleur de l'input en rouge
+        var controlcp = false;//on retourne false au form pour évité l'envoie du formulaire
+
+    }
+    else
+    {
+
+        document.getElementById("cp").className = "form-control is-valid";//on change la couleur de l'input en vert
+        document.getElementById("dcp").innerHTML="";//si c'est null on affiche rien
+        var controlcp = true;//on retourne true pour cette variable
+
+    } 
+
     if (ctrnom.exec(nom) == null)//si nom ne contient pas au moins deux lettre on sait jamais monsieur wu sa existe :D
     {
       
@@ -69,7 +131,7 @@ function verif()
     }
 
 
-    if (ctrdate.exec(date) == null)//si la date ne ressemble pas à 0000-00-00 c'est que ce n'est pas correcte c'est se que retourne type date dans l'input
+    if (ctrdate.exec(date) == null||validy==false)//si la date ne ressemble pas à 0000-00-00 c'est que ce n'est pas correcte c'est se que retourne type date dans l'input
     {
         document.getElementById("ddate").innerHTML="<div class=\"alert alert-danger\" role=\"alert\">Veuillez entrer une date valide exemple 01/01/2020</div>";//si c'est null on affiche box alerte
         var controldate = false;//on retourne false au form pour évité l'envoie du formulaire
@@ -130,13 +192,13 @@ function verif()
         var controlcgu = true;//on retourne true pour cette variable
     }
 
-    if(controlnom&&controlprenom&&controlmail&&controldate&&controlmescommandes&&controlquestion&&controlcgu)//maintenant on s'assure que tout est valide 
-    {
-        return true;
-    }
-    else
-    {
-        //sinon on renvoi bien un false
-        return false;
-    }
+        if(controlcp&&controlville&&controladresse&&controlnom&&controlprenom&&controlmail&&controldate&&controlmescommandes&&controlquestion&&controlcgu)//maintenant on s'assure que tout est valide 
+        {
+            return true;
+        }
+        else
+        {
+            //sinon on renvoi bien un false
+            return false;
+        }
 }
